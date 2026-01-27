@@ -1,5 +1,6 @@
 package com.uoa.collectoverse_backend;
 
+import com.uoa.collectoverse_backend.dto.UserDTO;
 import com.uoa.collectoverse_backend.model.User;
 import org.springframework.stereotype.Component;
 

@@ -1,5 +1,8 @@
-package com.uoa.collectoverse_backend;
+package com.uoa.collectoverse_backend.controller;
 
+import com.uoa.collectoverse_backend.dto.UserDTO;
+import com.uoa.collectoverse_backend.UserMapper;
+import com.uoa.collectoverse_backend.service.UserService;
 import com.uoa.collectoverse_backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

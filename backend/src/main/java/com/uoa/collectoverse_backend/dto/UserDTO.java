@@ -1,4 +1,4 @@
-package com.uoa.collectoverse_backend;
+package com.uoa.collectoverse_backend.dto;
 
 public class UserDTO {
     private  long id;

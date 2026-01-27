@@ -1,9 +1,9 @@
-package com.uoa.collectoverse_backend;
+package com.uoa.collectoverse_backend.service;
 
+import com.uoa.collectoverse_backend.repository.UserRepository;
 import com.uoa.collectoverse_backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
