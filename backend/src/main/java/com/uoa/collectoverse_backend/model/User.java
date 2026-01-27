@@ -1,9 +1,15 @@
 package com.uoa.collectoverse_backend.model;
 
-
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@Setter
 @Table(name = "users")
 public class User {
 
@@ -20,20 +26,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public User() {}
+    // BCryptPasswordEncoder come campo statico per riuso
+    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
-        this.password = password;
+        setPassword(password); // hashata subito
     }
 
-    // getter e setter
-    public Long getId() { return id; }
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        // hash della password con BCrypt
+        this.password = passwordEncoder.encode(password);
+    }
 }

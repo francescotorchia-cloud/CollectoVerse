@@ -1,8 +1,16 @@
 package com.uoa.collectoverse_backend.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@Setter
 @Table(name = "items")
 public class Item {
 
@@ -10,33 +18,35 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Nome dell'item (es: "Charizard Base Set", "PlayStation 2")
+    @Column(nullable = false)
     private String name;
 
+    // Descrizione testuale dell'item
+    @Column(length = 1000)
     private String description;
 
-    private String symbol; // per rappresentazione grafica dell’item
+    // Immagine principale dell'item (URL o path)
+    private String image;
 
+    // Simbolo/icona usata per la rappresentazione grafica (cerchio, rettangolo, ecc)
+    private String symbol;
+
+    // Data di inserimento dell'item nella collezione
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    // Collezione di appartenenza
     @ManyToOne
-    @JoinColumn(name = "collection_id")
+    @JoinColumn(name = "collection_id", nullable = false)
     private Collection collection;
 
-    public Item() {}
-
-    public Item(String name, String description, String symbol, Collection collection) {
+    public Item(String name, String description, String image, String symbol, Collection collection) {
         this.name = name;
         this.description = description;
+        this.image = image;
         this.symbol = symbol;
         this.collection = collection;
+        this.createdAt = LocalDateTime.now();
     }
-
-    // getter e setter
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public String getSymbol() { return symbol; }
-    public void setSymbol(String symbol) { this.symbol = symbol; }
-    public Collection getCollection() { return collection; }
-    public void setCollection(Collection collection) { this.collection = collection; }
 }
