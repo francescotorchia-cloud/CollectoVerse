@@ -9,5 +9,4 @@ public class CollectoverseBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CollectoverseBackendApplication.class, args);
 	}
-
 }
