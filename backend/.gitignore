@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Java / Spring Boot
+/target/
+*.class
+
+# Docker (I dati del database)
+/postgres-data/
+
+# Node / React
+node_modules/
+dist/
