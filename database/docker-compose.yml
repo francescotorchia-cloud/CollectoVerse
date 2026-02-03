@@ -1,13 +1,16 @@
+volumes:
+  postgres_data:
+
 services:
   db:
-    image: postgres:17-alpine
+    image: postgres:17.7-alpine
     container_name: unicam-postgres-db
     restart: always
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=collectoverse
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: collectoverse
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
