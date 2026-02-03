@@ -1,10 +1,11 @@
 package UOA.backend.models;
 
-import UOA.backend.category.Category;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Table(name= "items" )
 @Data
@@ -22,9 +23,12 @@ public class Item {
     @Column(nullable = false)
     private LocalDateTime date = LocalDateTime.now();  //definisce la data di aggiunta di un item
 
+    //Proprietario dell'item
     @ManyToOne
-    @JoinColumn(name = "collection_id", nullable = false)
-    private Collection collection;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
+    @ManyToMany(mappedBy = "items")
+    private List<Collection> collections;
 }
 

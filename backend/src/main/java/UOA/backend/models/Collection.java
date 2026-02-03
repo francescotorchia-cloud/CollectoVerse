@@ -2,7 +2,7 @@ package UOA.backend.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Generated;
+
 
 import java.util.List;
 
@@ -16,23 +16,17 @@ public class Collection {
     private Long id;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = true)
+    @Column
     private String description;
 
-
-    //Proprietario della collezione
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     //items della collezione
-    //aggiunta di cascade se no non vengono salvati/eliminati mai
-    @OneToMany(mappedBy = "collection", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany
+    @JoinTable(
+            name = "collection_item",
+            joinColumns = @JoinColumn(name = "collection_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
     private List<Item> items;
-
-
-
-
 
 
 }

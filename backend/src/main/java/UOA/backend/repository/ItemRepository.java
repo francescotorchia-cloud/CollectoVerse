@@ -1,6 +1,6 @@
 package UOA.backend.repository;
 
-import UOA.backend.category.Category;
+import UOA.backend.models.Category;
 import UOA.backend.models.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
