@@ -1,9 +1,9 @@
 package UOA.backend.repository;
 
-import org.apache.catalina.User;
+import UOA.backend.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
     User findByEmail(String email);
     boolean existsByUsername(String username);

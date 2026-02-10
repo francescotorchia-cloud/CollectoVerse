@@ -1,14 +1,16 @@
 package UOA.backend.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 import java.util.List;
 
 @Entity
 @Table(name ="collections")
-@Data
+@Getter
+@Setter
 
 public class Collection {
     @Id
@@ -18,6 +20,12 @@ public class Collection {
     private String title;
     @Column
     private String description;
+
+
+    // proprietario della collezione
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     //items della collezione
     @ManyToMany

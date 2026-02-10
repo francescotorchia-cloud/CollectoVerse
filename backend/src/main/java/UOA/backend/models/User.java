@@ -2,10 +2,12 @@ package UOA.backend.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "users")
-@Data //Con Lombok, genera automaticamente getter e setter
+@Getter @Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,3 +22,5 @@ public class User {
     @Column(nullable = false)
     private String password;
 }
+
+
