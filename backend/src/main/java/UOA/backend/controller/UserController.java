@@ -2,6 +2,7 @@ package UOA.backend.controller;
 
 import UOA.backend.models.User;
 import UOA.backend.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +30,13 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping("/by-username")
-    public User getUserByUsername(@RequestParam String username) {
+    @GetMapping("/username/{username}")
+    public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("/by-email")
-    public User getUserByEmail(@RequestParam String email) {
+    @GetMapping("/email/{email}")
+    public User getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
 
