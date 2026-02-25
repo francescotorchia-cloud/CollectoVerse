@@ -3,6 +3,7 @@ package UOA.backend.controller;
 import UOA.backend.models.Category;
 import UOA.backend.models.Item;
 import UOA.backend.service.ItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,50 +22,43 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public Item getItem(@PathVariable Long id) {
+    public Item getItemById(@PathVariable Long id) {
         return itemService.getItem(id);
     }
 
     @GetMapping
-    public List<Item> getItems(
-        @RequestParam(required = false) Long userId,
-        @RequestParam(required = false) Long collectionId
-    ) {
-        if (collectionId != null) {
-            return itemService.getCollectionItems(collectionId);
-        }
-        if (userId != null) {
-            return itemService.getUserItems(userId);
-        }
-        return itemService.getUserItems(-1L);
+    public List<Item> getItems(@RequestParam Long userId) {
+        return itemService.getUserItems(userId);
     }
 
-    @GetMapping("/by-category")
+    @GetMapping("/category")
     public List<Item> getItemsByCategory(
-        @RequestParam(required = false) Long collectionId,
         @RequestParam Category category
     ) {
-        return itemService.getItemsByCategory(collectionId, category);
+        return itemService.getItemsByCategory(category);
+    }
+
+    @GetMapping("/collection/{collectionId}")
+    public List<Item> getCollectionItems(
+        @PathVariable Long collectionId
+    ) {
+        return itemService.getCollectionItems(collectionId);
     }
 
     @PutMapping("/{id}")
     public Item updateItem(
-        @PathVariable Long id,
-        @RequestParam(required = false) String name,
-        @RequestParam(required = false) String description,
-        @RequestParam(required = false) Category category
-    ) {
-        return itemService.updateItem(id, name, description, category);
+        @PathVariable Long id, @Valid @RequestBody Item item) {
+        return itemService.updateItem(id, item.getName(), item.getDescription(), item.getCategory());
     }
 
-    @PostMapping("/{id}/collections/{collectionId}")
-    public void addItemToCollection(@PathVariable Long id, @PathVariable Long collectionId) {
-        itemService.addItemToCollection(id, collectionId);
+    @PostMapping("/{itemId}/collections/{collectionId}")
+    public void addItemToCollection(@PathVariable Long itemId, @PathVariable Long collectionId) {
+        itemService.addItemToCollection(itemId, collectionId);
     }
 
-    @DeleteMapping("/{id}/collections/{collectionId}")
-    public void removeItemFromCollection(@PathVariable Long id, @PathVariable Long collectionId) {
-        itemService.removeItemFromCollection(id, collectionId);
+    @DeleteMapping("/{itemId}/collections/{collectionId}")
+    public void removeItemFromCollection(@PathVariable Long itemId, @PathVariable Long collectionId) {
+        itemService.removeItemFromCollection(itemId, collectionId);
     }
 
     @DeleteMapping("/{id}")

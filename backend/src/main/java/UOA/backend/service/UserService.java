@@ -36,6 +36,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User update(Long id, String username, String email, String password) {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User non trovato"));
+        if (username != null && !username.isBlank()) user.setUsername(username);
+        if (email != null && !email.isBlank()) user.setEmail(email);
+        if (password != null && !password.isBlank()) user.setPassword(password);
+        return userRepository.save(user);
+    }
+
     public User getUser(Long id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("User non trovato"));

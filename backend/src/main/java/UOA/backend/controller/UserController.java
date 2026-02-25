@@ -3,7 +3,9 @@ package UOA.backend.controller;
 import UOA.backend.models.User;
 import UOA.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,11 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.getUser(id);
+    }
+
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
+        return userService.update(id, user.getUsername(), user.getEmail(), user.getPassword() );
     }
 
     @GetMapping

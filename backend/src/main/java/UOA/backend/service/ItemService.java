@@ -1,5 +1,6 @@
 package UOA.backend.service;
 
+import UOA.backend.models.Category;
 import UOA.backend.models.Collection;
 import UOA.backend.models.Item;
 import UOA.backend.models.User;
@@ -45,6 +46,8 @@ public class ItemService {
     }
 
     public List<Item> getUserItems(Long userId) {
+        if (userId == null) throw new IllegalArgumentException("Id non valido");
+        if (userRepository.findById(userId).isEmpty()) throw new EntityNotFoundException("User non trovato");
         return itemRepository.findByUserId(userId);
     }
 
@@ -52,11 +55,8 @@ public class ItemService {
         return itemRepository.findByCollections_Id(collectionId);
     }
 
-    public List<Item> getItemsByCategory(Long collectionId, UOA.backend.models.Category category) {
-        if (collectionId == null) {
-            return itemRepository.findByCategory(category);
-        }
-        return itemRepository.findByCollections_IdAndCategory(collectionId, category);
+    public List<Item> getItemsByCategory(Category category) {
+        return itemRepository.findByCategory(category);
     }
 
     public void addItemToCollection(Long itemId, Long collectionId) {
@@ -89,7 +89,7 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public Item updateItem(Long id, String name, String description, UOA.backend.models.Category category) {
+    public Item updateItem(Long id, String name, String description, Category category) {
         Item item = itemRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Item non trovato"));
         if (name != null && !name.isBlank()) {

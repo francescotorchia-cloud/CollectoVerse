@@ -41,11 +41,14 @@ public class CollectionService {
     }
 
     public List<Collection> getUserCollections(Long userId) {
+        if (userId == null) throw new IllegalArgumentException("Id non valido");
+        if (userRepository.findById(userId).isEmpty()) throw new EntityNotFoundException("User non trovato");
         return collectionRepository.findByUserId(userId);
     }
 
     public List<Collection> getCollectionsByTitle(String title) {
-        return collectionRepository.findByTitle(title);
+        if (title != null && !title.isBlank()) return collectionRepository.findByTitle(title);
+        else throw new IllegalArgumentException("Titolo obbligatorio");
     }
 
     public void deleteCollection(Long id) {
@@ -61,9 +64,7 @@ public class CollectionService {
         if (title != null && !title.isBlank()) {
             collection.setTitle(title);
         }
-        if (description != null) {
-            collection.setDescription(description);
-        }
+        collection.setDescription(description);
         return collectionRepository.save(collection);
     }
 }
