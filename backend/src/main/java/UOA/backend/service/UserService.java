@@ -4,6 +4,7 @@ import UOA.backend.models.User;
 import UOA.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
         if (user == null) {
@@ -33,6 +35,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email gia usata");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword())); //qui hashiamo la password.
         return userRepository.save(user);
     }
 
@@ -75,4 +78,6 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+
 }
