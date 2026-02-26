@@ -1,5 +1,7 @@
 package UOA.backend.controller;
 
+import UOA.backend.DTO.Request.UserRequest;
+import UOA.backend.DTO.Response.UserResponse;
 import UOA.backend.models.User;
 import UOA.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +31,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
-        return userService.update(id, user.getUsername(), user.getEmail(), user.getPassword() );
+        return userService.update(id, user.getUsername(), user.getEmail(), user.getPassword());
     }
 
     @GetMapping
@@ -50,5 +52,10 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+    }
+
+    @PostMapping("/login")
+    public UserResponse login(@RequestBody UserRequest request) {
+        return userService.login(request);
     }
 }
