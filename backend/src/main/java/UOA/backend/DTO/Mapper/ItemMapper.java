@@ -1,8 +1,8 @@
 package UOA.backend.DTO.Mapper;
 
 
-import UOA.backend.DTO.Request.ItemResponse;
-import UOA.backend.DTO.Response.ItemRequest;
+import UOA.backend.DTO.Response.ItemResponse;
+import UOA.backend.DTO.Request.ItemRequest;
 import UOA.backend.models.Item;
 
 public class ItemMapper {

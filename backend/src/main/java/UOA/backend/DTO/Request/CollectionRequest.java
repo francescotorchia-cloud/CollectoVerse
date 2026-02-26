@@ -1,4 +1,4 @@
-package UOA.backend.DTO.Response;
+package UOA.backend.DTO.Request;
 
 import lombok.Getter;
 import lombok.Setter;

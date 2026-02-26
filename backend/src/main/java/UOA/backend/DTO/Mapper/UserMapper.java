@@ -1,7 +1,7 @@
 package UOA.backend.DTO.Mapper;
 
-import UOA.backend.DTO.Request.UserResponse;
-import UOA.backend.DTO.Response.UserRequest;
+import UOA.backend.DTO.Response.UserResponse;
+import UOA.backend.DTO.Request.UserRequest;
 import UOA.backend.models.User;
 
 public class UserMapper {

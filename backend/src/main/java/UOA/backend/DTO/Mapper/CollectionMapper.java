@@ -1,7 +1,7 @@
 package UOA.backend.DTO.Mapper;
 
-import UOA.backend.DTO.Request.CollectionResponse;
-import UOA.backend.DTO.Response.CollectionRequest;
+import UOA.backend.DTO.Response.CollectionResponse;
+import UOA.backend.DTO.Request.CollectionRequest;
 import UOA.backend.models.Collection;
 
 public class CollectionMapper {

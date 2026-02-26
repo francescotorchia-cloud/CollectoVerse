@@ -1,5 +1,7 @@
 package UOA.backend.service;
 
+import UOA.backend.DTO.Request.UserRequest;
+import UOA.backend.DTO.Response.UserResponse;
 import UOA.backend.models.User;
 import UOA.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -78,6 +80,28 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+    public UserResponse login(UserRequest request){
+        if(request == null){ throw new IllegalArgumentException("Request non valida");}
+        String email = request.getEmail();
+        if(email == null || email.isBlank()){ throw new IllegalArgumentException("Email obbligatoria");}
+        String password = request.getPassword();
+        if(password == null || password.isBlank()){ throw new IllegalArgumentException("Password obbligatoria");}
+        User user = userRepository.findByEmail(email);
+        if(user == null) { throw new IllegalArgumentException("Credenziali non valide");}
+        boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
+        if(!passwordMatch){ throw new IllegalArgumentException("Credenziali non valide");}
+
+        UserResponse response = new UserResponse();
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        return response;
+
+
+
+
+    }
+
 
 
 }

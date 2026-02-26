@@ -1,4 +1,4 @@
-package UOA.backend.DTO.Response;
+package UOA.backend.DTO.Request;
 
 import UOA.backend.models.Category;
 import lombok.Getter;

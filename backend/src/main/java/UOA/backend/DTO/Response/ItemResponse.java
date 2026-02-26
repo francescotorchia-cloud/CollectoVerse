@@ -1,4 +1,4 @@
-package UOA.backend.DTO.Request;
+package UOA.backend.DTO.Response;
 
 import UOA.backend.models.Category;
 import UOA.backend.models.Collection;
