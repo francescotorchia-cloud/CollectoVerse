@@ -8,7 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import UOA.backend.security.JwtService;
 import java.util.List;
 
 @Service
@@ -17,6 +17,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+
 
     public User createUser(User user) {
         if (user == null) {
@@ -87,19 +89,21 @@ public class UserService {
         if(email == null || email.isBlank()){ throw new IllegalArgumentException("Email obbligatoria");}
         String password = request.getPassword();
         if(password == null || password.isBlank()){ throw new IllegalArgumentException("Password obbligatoria");}
+
         User user = userRepository.findByEmail(email);
         if(user == null) { throw new IllegalArgumentException("Credenziali non valide");}
+
         boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
         if(!passwordMatch){ throw new IllegalArgumentException("Credenziali non valide");}
+
+        // --- Generazione JWT ---
+        String jwtToken = jwtService.generateToken(user);
 
         UserResponse response = new UserResponse();
         response.setUsername(user.getUsername());
         response.setEmail(user.getEmail());
+        response.setToken(jwtToken); // Inserisci il token nella risposta
         return response;
-
-
-
-
     }
 
 
