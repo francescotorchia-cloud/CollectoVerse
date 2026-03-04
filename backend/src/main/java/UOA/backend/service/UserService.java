@@ -102,6 +102,32 @@ public class UserService {
 
     }
 
+    public UserResponse register(UserRequest request) {
+        if(request == null){ throw new IllegalArgumentException("Request non valida");}
+        String email = request.getEmail();
+        if(email == null || email.isBlank()){ throw new IllegalArgumentException("Email obbligatoria");}
+        String username = request.getUsername();
+        if(username == null || username.isBlank()){ throw new IllegalArgumentException("Username");}
+        String password = request.getPassword();
+        if(password == null || password.isBlank()){ throw new IllegalArgumentException("Password obbligatoria");}
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+
+        User savedUser = userRepository.save(user);
+
+        UserResponse response = new UserResponse();
+        response.setUsername(savedUser.getUsername());
+        response.setEmail(savedUser.getEmail());
+        return response;
+    }
+
+
+
+
+
+
 
 
 }
