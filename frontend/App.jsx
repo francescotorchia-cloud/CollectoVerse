@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { login } from "./services/authService";
+import { login } from "./authService";
 
 export default function App() {
     const [email, setEmail] = useState("");
@@ -14,7 +14,9 @@ export default function App() {
         setLoading(true);
 
         try {
-            const loggedUser = await login(email, password);
+            const normalizedEmail = email.trim().toLowerCase();
+            const normalizedPassword = password.trim();
+            const loggedUser = await login(normalizedEmail, normalizedPassword);
             setUser(loggedUser);
             localStorage.setItem("user", JSON.stringify(loggedUser));
         } catch (err) {

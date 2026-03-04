@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "/api";
 
 export async function login(email, password) {
     const res = await fetch(`${API_BASE_URL}/users/login`, {
@@ -8,10 +8,7 @@ export async function login(email, password) {
     });
 
     if (!res.ok) {
-        let message = "Errore login";
-        try {
-            message = await res.text();
-        } catch (_) {}
+        const message = await res.text();
         throw new Error(message || "Credenziali non valide");
     }
 
