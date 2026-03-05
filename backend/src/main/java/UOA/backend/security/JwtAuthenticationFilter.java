@@ -32,29 +32,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String userEmail;
+        final String subjectUsername; // Usiamo lo username, non l'email
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt); // Usiamo l'email come subject nel token
+        try {
+            jwt = authHeader.substring(7);
+            subjectUsername = jwtService.extractUsername(jwt);
 
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userRepository.findByEmail(userEmail);
+            if (subjectUsername != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                // FONDAMENTALE: Cerca per Username, non per Email!
+                UserDetails userDetails = userRepository.findByUsername(subjectUsername);
 
-            if (userDetails != null && jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (userDetails != null && jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities() == null ? java.util.Collections.emptyList() : userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+        } catch (Exception e) {
+            // Se il token è malformato, Spring Security passa oltre e restituisce 403 in automatico
+            System.out.println("Errore filtro JWT: " + e.getMessage());
         }
+
         filterChain.doFilter(request, response);
     }
 }
