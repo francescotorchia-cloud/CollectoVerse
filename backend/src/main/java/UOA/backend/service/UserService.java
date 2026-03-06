@@ -39,6 +39,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email gia usata");
         }
+        user.setEmail(user.getEmail().toLowerCase());
         user.setPassword(passwordEncoder.encode(user.getPassword())); //qui hashiamo la password.
         return userRepository.save(user);
     }
@@ -85,7 +86,7 @@ public class UserService {
 
     public UserResponse login(UserRequest request){
         if(request == null){ throw new IllegalArgumentException("Request non valida");}
-        String email = request.getEmail();
+        String email = request.getEmail().toLowerCase();
         if(email == null || email.isBlank()){ throw new IllegalArgumentException("Email obbligatoria");}
         String password = request.getPassword();
         if(password == null || password.isBlank()){ throw new IllegalArgumentException("Password obbligatoria");}
@@ -116,7 +117,7 @@ public class UserService {
         if(password == null || password.isBlank()){ throw new IllegalArgumentException("Password obbligatoria");}
         User user = new User();
         user.setUsername(username);
-        user.setEmail(email);
+        user.setEmail(email.toLowerCase());
         user.setPassword(passwordEncoder.encode(password));
 
         User savedUser = userRepository.save(user);
