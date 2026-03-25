@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class CollectionService {
     private final CollectionRepository collectionRepository;
     private final UserRepository userRepository;
 
-    public Collection createCollection(Long userId, Collection collection) {
+    public Collection createCollection(UUID userId, Collection collection) {
         if (collection == null) {
             throw new IllegalArgumentException("Collezione non valida");
         }
@@ -40,7 +41,7 @@ public class CollectionService {
             .orElseThrow(() -> new EntityNotFoundException("Collezione non trovata"));
     }
 
-    public List<Collection> getUserCollections(Long userId) {
+    public List<Collection> getUserCollections(UUID userId) {
         if (userId == null) throw new IllegalArgumentException("Id non valido");
         if (userRepository.findById(userId).isEmpty()) throw new EntityNotFoundException("User non trovato");
         return collectionRepository.findByUserId(userId);

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import UOA.backend.security.JwtService;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class UserService {
 
 
 
-    public User update(Long id, String username, String email, String password) {
+    public User update(UUID id, String username, String email, String password) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User non trovato"));
         if (username != null && !username.isBlank()) user.setUsername(username);
         if (email != null && !email.isBlank()) user.setEmail(email);
@@ -29,7 +30,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getUser(Long id) {
+    public User getUser(UUID id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("User non trovato"));
     }
@@ -54,7 +55,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(UUID id) {
         if (!userRepository.existsById(id)) {
             throw new EntityNotFoundException("User non trovato");
         }

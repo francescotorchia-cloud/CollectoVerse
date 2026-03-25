@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/items")
@@ -17,7 +18,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public Item createItem(@RequestParam Long userId, @RequestBody Item item) {
+    public Item createItem(@RequestParam UUID userId, @RequestBody Item item) {
         return itemService.createItem(userId, item);
     }
 
@@ -27,7 +28,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<Item> getItems(@RequestParam Long userId) {
+    public List<Item> getItems(@RequestParam UUID userId) {
         return itemService.getUserItems(userId);
     }
 

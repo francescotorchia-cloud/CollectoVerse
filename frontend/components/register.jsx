@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Assuming you are using react-router-dom
 
-
-
-export const Register= () => {
+export const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setError(''); // Reset error message on new submission
 
         try {
             const res = await fetch(`http://localhost:8080/users/register`, {
@@ -21,15 +23,15 @@ export const Register= () => {
                 const data = await res.json();
                 console.log("Registrazione avvenuta con successo:", data);
                 alert("Registrazione avvenuta con successo!");
-                // Qui potresti reindirizzare l'utente alla pagina di login
+                navigate('/login'); // Redirect to login page
             } else {
-                const errorData = await res.json().catch(() => ({ message: "Errore sconosciuto. Controlla la console del server." }));
+                const errorData = await res.json().catch(() => ({ message: "An unknown error occurred. Please check the server console." }));
                 console.error("Errore durante la registrazione:", errorData);
-                alert(`Errore durante la registrazione: ${errorData.message || 'Riprova più tardi.'}`);
+                setError(errorData.message || 'Registration failed. Please try again later.');
             }
         } catch (error) {
-            console.error("Errore di rete o di connessione:", error);
-            alert("Errore di connessione. Assicurati che il server sia in esecuzione.");
+            console.error("Network or connection error:", error);
+            setError("Connection error. Please ensure the server is running.");
         }
     }
 
@@ -38,22 +40,29 @@ export const Register= () => {
             <form className="card" onSubmit={handleSubmit}>
                 <h1>Registrati</h1>
 
-                <label>Username</label>
+                {error && <p className="error">{error}</p>}
+
+                <label htmlFor="username">Username</label>
                 <input
-                    type="username"
+                    id="username"
+                    type="text" // Corrected from type="username"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
                     required
                 />
-                <label>Email</label>
+
+                <label htmlFor="email">Email</label>
                 <input
+                    id="email"
                     type="email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     required
                 />
-                <label>Password</label>
+
+                <label htmlFor="password">Password</label>
                 <input
+                    id="password"
                     type="password"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}

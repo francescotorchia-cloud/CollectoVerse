@@ -5,10 +5,11 @@ import UOA.backend.models.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ItemRepository extends JpaRepository<Item,Long> {
     //tutti gli item di un user
-    List<Item> findByUserId(Long userId);
+    List<Item> findByUserId(UUID userId);
     //tutti gli item filtrati per categoria
     List<Item> findByCategory(Category category);
     //tutti gli item di una collezione (ManyToMany)

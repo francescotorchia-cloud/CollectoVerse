@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class ItemService {
     private final UserRepository userRepository;
     private final CollectionRepository collectionRepository;
 
-    public Item createItem(Long userId, Item item) {
+    public Item createItem(UUID userId, Item item) {
         if (item == null) {
             throw new IllegalArgumentException("Item non valido");
         }
@@ -45,7 +46,7 @@ public class ItemService {
             .orElseThrow(() -> new EntityNotFoundException("Item non trovato"));
     }
 
-    public List<Item> getUserItems(Long userId) {
+    public List<Item> getUserItems(UUID userId) {
         if (userId == null) throw new IllegalArgumentException("Id non valido");
         if (userRepository.findById(userId).isEmpty()) throw new EntityNotFoundException("User non trovato");
         return itemRepository.findByUserId(userId);

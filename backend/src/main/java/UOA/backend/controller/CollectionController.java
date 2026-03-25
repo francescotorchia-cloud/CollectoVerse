@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/collections")
@@ -16,7 +17,7 @@ public class CollectionController {
     private final CollectionService collectionService;
 
     @PostMapping
-    public Collection createCollection(@RequestParam Long userId, @Valid @RequestBody Collection collection) {
+    public Collection createCollection(@RequestParam UUID userId, @Valid @RequestBody Collection collection) {
         return collectionService.createCollection(userId, collection);
     }
 
@@ -26,7 +27,7 @@ public class CollectionController {
     }
 
     @GetMapping
-    public List<Collection> getCollections(@RequestParam Long userId) {
+    public List<Collection> getCollections(@RequestParam UUID userId) {
         return collectionService.getUserCollections(userId);
     }
 
