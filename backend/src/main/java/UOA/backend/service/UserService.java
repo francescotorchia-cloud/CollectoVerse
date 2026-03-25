@@ -20,29 +20,6 @@ public class UserService {
     private final JwtService jwtService;
 
 
-    public User createUser(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User non valido");
-        }
-        if (user.getUsername() == null || user.getUsername().isBlank()) {
-            throw new IllegalArgumentException("Username obbligatorio");
-        }
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new IllegalArgumentException("Email obbligatoria");
-        }
-        if (user.getPassword() == null || user.getPassword().isBlank()) {
-            throw new IllegalArgumentException("Password obbligatoria");
-        }
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new IllegalArgumentException("Username gia usato");
-        }
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Email gia usata");
-        }
-        user.setEmail(user.getEmail().toLowerCase());
-        user.setPassword(passwordEncoder.encode(user.getPassword())); //qui hashiamo la password.
-        return userRepository.save(user);
-    }
 
     public User update(Long id, String username, String email, String password) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User non trovato"));
@@ -112,7 +89,7 @@ public class UserService {
         String email = request.getEmail();
         if(email == null || email.isBlank()){ throw new IllegalArgumentException("Email obbligatoria");}
         String username = request.getUsername();
-        if(username == null || username.isBlank()){ throw new IllegalArgumentException("Username");}
+        if(username == null || username.isBlank()){ throw new IllegalArgumentException("Username obbligatorio");}
         String password = request.getPassword();
         if(password == null || password.isBlank()){ throw new IllegalArgumentException("Password obbligatoria");}
         User user = new User();
