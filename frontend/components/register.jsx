@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Assuming you are using react-router-dom
+import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
+
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setError(''); // Reset error message on new submission
 
         try {
             const res = await fetch(`http://localhost:8080/users/register`, {
@@ -20,49 +20,52 @@ export const Register = () => {
             });
 
             if (res.ok) {
-                const data = await res.json();
-                console.log("Registrazione avvenuta con successo:", data);
-                alert("Registrazione avvenuta con successo!");
-                navigate('/login'); // Redirect to login page
+                // Imposta lo stato a true per mostrare la pagina di intermezzo
+                setIsSuccess(true);
             } else {
-                const errorData = await res.json().catch(() => ({ message: "An unknown error occurred. Please check the server console." }));
-                console.error("Errore durante la registrazione:", errorData);
-                setError(errorData.message || 'Registration failed. Please try again later.');
+                const errorData = await res.json().catch(() => ({ message: "Errore sconosciuto. Controlla la console del server." }));
+                alert(`Errore durante la registrazione: ${errorData.message || 'Riprova più tardi.'}`);
             }
         } catch (error) {
-            console.error("Network or connection error:", error);
-            setError("Connection error. Please ensure the server is running.");
+            alert("Errore di connessione. Assicurati che il server sia in esecuzione.");
         }
     }
 
+    // Pagina di intermezzo mostrata se isSuccess è true
+    if (isSuccess) {
+        return (
+            <main className="container">
+                <div className="card">
+                    <h1>Registrazione avvenuta con successo!</h1>
+                    <p>Il tuo account è stato creato correttamente.</p>
+                    <button onClick={() => navigate('/login')}>Vai al Login</button>
+                </div>
+            </main>
+        );
+    }
+
+    // Form di registrazione
     return (
         <main className="container">
             <form className="card" onSubmit={handleSubmit}>
                 <h1>Registrati</h1>
 
-                {error && <p className="error">{error}</p>}
-
-                <label htmlFor="username">Username</label>
+                <label>Username</label>
                 <input
-                    id="username"
-                    type="text" // Corrected from type="username"
+                    type="text"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
                     required
                 />
-
-                <label htmlFor="email">Email</label>
+                <label>Email</label>
                 <input
-                    id="email"
                     type="email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     required
                 />
-
-                <label htmlFor="password">Password</label>
+                <label>Password</label>
                 <input
-                    id="password"
                     type="password"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
