@@ -6,7 +6,7 @@ export const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
-
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -20,14 +20,14 @@ export const Register = () => {
             });
 
             if (res.ok) {
-                // Imposta lo stato a true per mostrare la pagina di intermezzo
                 setIsSuccess(true);
+                setError(''); // Pulisce eventuali errori precedenti
             } else {
-                const errorData = await res.json().catch(() => ({ message: "Errore sconosciuto. Controlla la console del server." }));
-                alert(`Errore durante la registrazione: ${errorData.message || 'Riprova più tardi.'}`);
+                const errorMessage = await res.text(); // Legge la stringa pulita dal backend
+                setError(errorMessage);
             }
         } catch (error) {
-            alert("Errore di connessione. Assicurati che il server sia in esecuzione.");
+            setError("Errore di connessione al server.");
         }
     }
 
@@ -71,6 +71,7 @@ export const Register = () => {
                     onChange={(event) => setPassword(event.target.value)}
                     required
                 />
+                {error && <p style={{ color: 'red', fontWeight: 'bold', margin: '10px 0' }}>{error}</p>}
                 <button type="submit">Registrati</button>
             </form>
         </main>
