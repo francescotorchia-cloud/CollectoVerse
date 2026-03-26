@@ -7,6 +7,8 @@ import UOA.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,4 +62,11 @@ public class UserController {
     public UserResponse register(@RequestBody UserRequest request) {
         return userService.register(request);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleExceptions(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+
 }
