@@ -93,6 +93,12 @@ public class UserService {
         if(username == null || username.isBlank()){ throw new IllegalArgumentException("Username obbligatorio");}
         String password = request.getPassword();
         if(password == null || password.isBlank()){ throw new IllegalArgumentException("Password obbligatoria");}
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("Username già in uso.");
+        }
+        if (userRepository.existsByEmail(email.toLowerCase())) {
+            throw new IllegalArgumentException("Email già in uso.");
+        }
         User user = new User();
         user.setUsername(username);
         user.setEmail(email.toLowerCase());
