@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ButtonBlackWhite from './ButtonBlackWhite';
 
 export const Register = () => {
     const [username, setUsername] = useState('');
@@ -34,11 +35,11 @@ export const Register = () => {
     // Pagina di intermezzo mostrata se isSuccess è true
     if (isSuccess) {
         return (
-            <main className="container">
+            <main className="auth-container">
                 <div className="card">
                     <h1>Registrazione avvenuta con successo!</h1>
                     <p>Il tuo account è stato creato correttamente.</p>
-                    <button onClick={() => navigate('/login')}>Vai al Login</button>
+                    <ButtonBlackWhite onClick={() => navigate('/login')}>Vai al Login</ButtonBlackWhite>
                 </div>
             </main>
         );
@@ -46,7 +47,7 @@ export const Register = () => {
 
     // Form di registrazione
     return (
-        <main className="container">
+        <main className="auth-container">
             <form className="card" onSubmit={handleSubmit}>
                 <h1>Registrati</h1>
 
@@ -71,7 +72,7 @@ export const Register = () => {
                     onChange={(event) => setPassword(event.target.value)}
                     required
                 />
-                <button type="submit">Registrati</button>
+                <ButtonBlackWhite type="submit">Registrati</ButtonBlackWhite>
             </form>
         </main>
     )

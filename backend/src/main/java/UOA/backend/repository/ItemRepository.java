@@ -3,10 +3,11 @@ package UOA.backend.repository;
 import UOA.backend.models.Category;
 import UOA.backend.models.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
-
+@Repository
 public interface ItemRepository extends JpaRepository<Item,Long> {
     //tutti gli item di un user
     List<Item> findByUserId(UUID userId);

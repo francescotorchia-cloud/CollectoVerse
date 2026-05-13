@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ButtonBlackWhite from './ButtonBlackWhite';
 
 export const login = () => {
     const [email, setEmail] = useState("");
@@ -36,7 +37,7 @@ export const login = () => {
 
     if (user) {
         return (
-            <main className="container">
+            <main className="auth-container">
                 <h1>Benvenuto, {user.username}</h1>
                 <p>Login effettuato con {user.email}</p>
             </main>
@@ -44,7 +45,7 @@ export const login = () => {
     }
 
     return (
-        <main className="container">
+        <main className="auth-container">
             <form className="card" onSubmit={handleSubmit}>
                 <h1>Login</h1>
 
@@ -66,9 +67,9 @@ export const login = () => {
 
                 {error && <p className="error">{error}</p>}
 
-                <button type="submit" disabled={loading}>
+                <ButtonBlackWhite type="submit" disabled={loading}>
                     {loading ? "Accesso..." : "Accedi"}
-                </button>
+                </ButtonBlackWhite>
             </form>
         </main>
     );
